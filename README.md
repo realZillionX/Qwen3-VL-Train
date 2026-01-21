@@ -12,6 +12,17 @@ pip install ms-swift -U
 pip install vllm
 ```
 
+## 0. 模型下载 (Model Download)
+**注意：由于训练环境离线，你需要先在有网的机器上下载模型，然后拷贝到服务器。**
+
+我提供了一个 `download_model.py` 脚本，用于通过 ModelScope 下载模型。
+
+```bash
+# 在有网的机器上运行
+python download_model.py --save_dir ./model_weights
+```
+下载完成后，请将 `./model_weights` 目录完整拷贝到离线训练服务器的对应位置，并在 `train_grpo.py` 中修改 `model_path` 指向该目录。
+
 ### 断网环境说明 (Offline Mode)
 本项目脚本已默认配置为离线模式（设置了 `HF_DATASETS_OFFLINE=1` 等环境变量）。
 只要确保：
