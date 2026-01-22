@@ -43,7 +43,7 @@ pip install vllm
 # 在有网机器运行
 python download_model.py --save_dir ./model_weights
 ```
-将下载好的 `./model_weights` 目录拷贝到训练服务器。下载完成后，请在 `train_sft.py` 和 `train_grpo.py` 中修改 `model_path` 指向该目录。
+将下载好的 `./model_weights` 目录拷贝到训练服务器。下载完成后，请在 `train_sft.sh` 和 `train_grpo.py` 中修改 `MODEL_PATH`/`model_path` 指向该目录。
 
 ### 1.3 离线配置
 本项目脚本内置了以下环境变量，无需手动设置：
@@ -90,11 +90,11 @@ python prepare_data.py \
 **建议**：完全没有接触过该任务格式的模型，建议先跑 SFT。
 
 ### 3.1 配置与运行
-编辑 `train_sft.py`，确保 `model_path` 指向你的模型权重目录。
+编辑 `train_sft.sh`，确保 `MODEL_PATH` 指向你的模型权重目录。
 
 ```bash
-# 单卡或多卡运行 (脚本内部自动适配)
-python train_sft.py
+# 单卡或多卡运行
+bash train_sft.sh
 ```
 
 *   **输出目录**：`output/sft_qwen3_vl`
