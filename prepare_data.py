@@ -27,6 +27,7 @@ def process_eyeballing(data_root, output_path):
         
         entry = {
             "query": item['prompt'] + "\nPlease output your final answer within <answer>...</answer> tags.",
+            "response": f"<answer>{item['correct_option']}</answer>",
             "images": [image_path],
             "solution": item['correct_option']
         }
@@ -56,6 +57,7 @@ def process_maze(data_root, output_path):
         
         entry = {
             "query": item['gpt5_prompt'] + "\nPlease output your final answer within <answer>...</answer> tags.",
+            "response": f"<answer>{solution_str}</answer>",
             "images": [image_path],
             "solution": solution_str
         }
