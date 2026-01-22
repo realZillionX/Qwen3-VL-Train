@@ -40,7 +40,7 @@ def get_eyeballing_prompt(task_type, mode='sft'):
     base_prompt = EYEBALLING_PROMPTS.get(task_type, "Select the correct option from the image.")
     
     if mode == 'sft':
-        suffix = "\n不要输出思考过程。\nPlease output your final answer within <answer>...</answer> tags."
+        suffix = "\n不要输出思考过程，直接输出答案。"
     else: # grpo
         suffix = "\n输出思考过程，并把答案用<answer></answer>包裹。"
         
@@ -50,7 +50,7 @@ def get_maze_prompt(mode='sft'):
     base_prompt = MAZE_PROMPT
     
     if mode == 'sft':
-        suffix = "\n不要输出思考过程。\nPlease output your final answer within <answer>...</answer> tags."
+        suffix = "\n不要输出思考过程，直接输出答案。"
     else: # grpo
         suffix = "\n输出思考过程，并把答案用<answer></answer>包裹。"
         
@@ -74,9 +74,17 @@ def process_eyeballing(data_root, mode):
         
         prompt = get_eyeballing_prompt(task_type, mode)
         
+        if mode == 'sft':
+            # No tags for SFT
+            response_text = item['correct_option']
+        else:
+            # Tags for GRPO (if we were to use response field, but GRPO calculates reward from generated text)
+            # Actually for consistency, let's keep response structure if needed, but per user request SFT has no tags.
+            response_text = f"<answer>{item['correct_option']}</answer>"
+
         entry = {
             "query": prompt,
-            "response": f"<answer>{item['correct_option']}</answer>",
+            "response": response_text,
             "images": [image_path],
             "solution": item['correct_option']
         }
@@ -102,9 +110,14 @@ def process_maze(data_root, mode):
         solution_str = json.dumps(item['solution_path_cell_ids'])
         prompt = get_maze_prompt(mode)
         
+        if mode == 'sft':
+             response_text = solution_str
+        else:
+             response_text = f"<answer>{solution_str}</answer>"
+             
         entry = {
             "query": prompt,
-            "response": f"<answer>{solution_str}</answer>",
+            "response": response_text,
             "images": [image_path],
             "solution": solution_str
         }
