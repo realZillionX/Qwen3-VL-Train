@@ -26,7 +26,7 @@ def process_eyeballing(data_root, output_path):
         # solution: correct_option (specifically for reward function)
         
         entry = {
-            "query": item['prompt'],
+            "query": item['prompt'] + "\nPlease output your final answer within <answer>...</answer> tags.",
             "images": [image_path],
             "solution": item['correct_option']
         }
@@ -55,7 +55,7 @@ def process_maze(data_root, output_path):
         solution_str = json.dumps(item['solution_path_cell_ids'])
         
         entry = {
-            "query": item['gpt5_prompt'],
+            "query": item['gpt5_prompt'] + "\nPlease output your final answer within <answer>...</answer> tags.",
             "images": [image_path],
             "solution": solution_str
         }

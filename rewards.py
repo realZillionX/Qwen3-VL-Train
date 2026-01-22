@@ -9,9 +9,33 @@ def reward_eyeballing(completions, solution, **kwargs):
     """
     rewards = []
     for completion, sol in zip(completions, solution):
-        # Extract the last single letter from the completion as the answer
-        # Heuristic: Find simple letter pattern or take the last non-punctuated token
+        # 1. Extract content from <answer>...</answer> if present
+        # If explicitly found, use that content. If not, fallback to full text (or 0 reward).
+        start_tag = "<answer>"
+        end_tag = "</answer>"
+        if start_tag in completion and end_tag in completion:
+            try:
+                # Find the LAST answer block if multiple (or first, but typically last is result)
+                # Let's take the content of the last matching block
+                start_idx = completion.rfind(start_tag) + len(start_tag)
+                end_idx = completion.find(end_tag, start_idx)
+                if end_idx != -1:
+                    text = completion[start_idx:end_idx]
+                else:
+                    text = completion
+            except:
+                 text = completion
+        else:
+            text = completion
+
+        # Visualize extraction for debugging if needed (or just proceed)
+        
+        # 2. Heuristic extraction from the (extracted) text
         # Using a regex to find "A", "B", "C", "D", "E"
+        
+        # Normalize
+        text = text.strip()
+
         
         # Normalize
         text = completion.strip()
@@ -49,6 +73,15 @@ def reward_maze(completions, solution, **kwargs):
             # Parse solution
             sol_path = json.loads(sol_str)
             
+            # Extract content from <answer>...</answer>
+            start_tag = "<answer>"
+            end_tag = "</answer>"
+            if start_tag in completion and end_tag in completion:
+                start_idx = completion.rfind(start_tag) + len(start_tag)
+                end_idx = completion.find(end_tag, start_idx)
+                if end_idx != -1:
+                    completion = completion[start_idx:end_idx]
+
             # Parse completion 
             # Look for a list pattern "[...]"
             match = re.search(r'\[(.*?)\]', completion, re.DOTALL)
