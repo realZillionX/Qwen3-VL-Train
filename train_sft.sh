@@ -1,7 +1,7 @@
 #!/bin/bash
 # SFT Training Script for Qwen3-VL using ms-swift CLI
+# Full Fine-Tuning with DeepSpeed ZeRO-3 (8x H200)
 # Usage: bash train_sft.sh
-# Make sure to modify MODEL_PATH before running.
 
 # Offline mode
 export HF_DATASETS_OFFLINE=1
@@ -11,25 +11,31 @@ export TRANSFORMERS_OFFLINE=1
 MODEL_PATH="/path/to/Qwen3-VL-32B-Thinking"  # <-- CHANGE THIS
 DATASET="train_sft.jsonl"
 OUTPUT_DIR="output/sft_qwen3_vl"
+NUM_GPUS=8
 # ==================================
 
-# Run swift sft command
+# DeepSpeed ZeRO-3 Config (inline JSON or use a file)
+# ms-swift supports --deepspeed with built-in configs like "zero3" or custom json path
+DEEPSPEED_CONFIG="zero3"
+
+# Run distributed training with DeepSpeed
+# Using torchrun for multi-GPU
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
 swift sft \
     --model "$MODEL_PATH" \
     --dataset "$DATASET" \
     --output_dir "$OUTPUT_DIR" \
-    --learning_rate 2e-5 \
+    --deepspeed "$DEEPSPEED_CONFIG" \
+    --learning_rate 1e-5 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 1 \
-    --gradient_accumulation_steps 16 \
+    --gradient_accumulation_steps 4 \
+    --gradient_checkpointing true \
     --save_steps 100 \
     --logging_steps 10 \
     --max_length 2048 \
     --bf16 true \
-    --sft_type lora \
-    --lora_target_modules "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj" \
-    --lora_rank 16 \
-    --lora_alpha 32 \
+    --sft_type full \
     --report_to tensorboard
 
 echo "SFT Training finished. Output saved to $OUTPUT_DIR"

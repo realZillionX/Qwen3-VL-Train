@@ -99,9 +99,9 @@ bash train_sft.sh
 
 *   **输出目录**：`output/sft_qwen3_vl`
 *   **关键参数**：
-    *   `dataset`: 自动加载 `train_sft.jsonl`
-    *   `learning_rate`: 2e-5 (默认)
-    *   `sft_type`: lora
+    *   `--sft_type full`: 全量微调（非 LoRA）
+    *   `--deepspeed zero3`: 启用 DeepSpeed ZeRO-3，将模型参数切分到 8 张卡上
+    *   `--gradient_checkpointing true`: 开启梯度检查点，进一步节省显存
 
 ---
 
