@@ -68,8 +68,8 @@ python prepare_data.py \
 
 ```json
 {
-  "query": "Which point looks like... \n不要输出思考过程，直接输出答案。", // SFT Prompt (针对不同任务会有不同提问)
-  "response": "[1, 2, 3]",                    // SFT用于监督：无标签
+  "query": "Which point looks like... \nDo not output the thinking process. Output the answer directly.", // SFT Prompt (Task specific)
+  "response": "[1, 2, 3]",                    // SFT Target: Bare answer
   "images": ["/abs/path/to/image.png"],
   "solution": "[1, 2, 3]"             
 }
@@ -77,8 +77,8 @@ python prepare_data.py \
 **或者 (GRPO 格式):**
 ```json
 {
-  "query": "Which point looks like... \n输出思考过程，并把答案用<answer></answer>包裹。", // GRPO Prompt
-  "response": "<answer>[1, 2, 3]</answer>",   // GRPO训练时模型会自动生成带标签的回复
+  "query": "Which point looks like... \nPlease think step by step and output your final answer within <answer>...</answer> tags.", // GRPO Prompt
+  "response": "<answer>[1, 2, 3]</answer>",   // GRPO Target (Model generates this)
   ...
 }
 ```
