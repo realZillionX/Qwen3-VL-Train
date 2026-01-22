@@ -40,9 +40,9 @@ def get_eyeballing_prompt(task_type, mode='sft'):
     base_prompt = EYEBALLING_PROMPTS.get(task_type, "Select the correct option from the image.")
     
     if mode == 'sft':
-        suffix = "\n不要输出思考过程，直接输出答案。"
+        suffix = "\nDo not output the thinking process. Output the answer directly."
     else: # grpo
-        suffix = "\n输出思考过程，并把答案用<answer></answer>包裹。"
+        suffix = "\nPlease think step by step and output your final answer within <answer>...</answer> tags."
         
     return base_prompt + suffix
 
@@ -50,9 +50,9 @@ def get_maze_prompt(mode='sft'):
     base_prompt = MAZE_PROMPT
     
     if mode == 'sft':
-        suffix = "\n不要输出思考过程，直接输出答案。"
+        suffix = "\nDo not output the thinking process. Output the answer directly."
     else: # grpo
-        suffix = "\n输出思考过程，并把答案用<answer></answer>包裹。"
+        suffix = "\nPlease think step by step and output your final answer within <answer>...</answer> tags."
         
     return base_prompt + suffix
 
