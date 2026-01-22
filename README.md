@@ -59,11 +59,13 @@ python download_model.py --save_dir ./model_weights
 **运行转换脚本：**
 ```bash
 python prepare_data.py \
-    --data_root /inspire/hdd/project/embodied-multimodality/public/VLMPuzzle/dataset \
-    --output_path train.jsonl
+    --data_root /inspire/hdd/project/embodied-multimodality/public/VLMPuzzle/dataset
 ```
 
-**生成格式示例 (`train.jsonl`)：**
+**运行后会生成两个文件：**
+1.  **`train_sft.jsonl`**: 用于 SFT。Prompt 中包含“不要输出思考过程”。
+2.  **`train_grpo.jsonl`**: 用于 GRPO。Prompt 中包含“输出思考过程”。
+
 ```json
 {
   "query": "Please solve this maze...\nPlease output your final answer within <answer>...</answer> tags.",
@@ -89,7 +91,7 @@ python train_sft.py
 
 *   **输出目录**：`output/sft_qwen3_vl`
 *   **关键参数**：
-    *   `dataset`: 自动加载 `train.jsonl`
+    *   `dataset`: 自动加载 `train_sft.jsonl`
     *   `learning_rate`: 2e-5 (默认)
     *   `sft_type`: lora
 

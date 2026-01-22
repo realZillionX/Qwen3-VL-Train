@@ -17,7 +17,7 @@ def main():
     
     # Placeholder path - User will need to update this
     model_path = "/path/to/Qwen3-VL-32B-Thinking" 
-    data_path = "train.jsonl"
+    data_path = "train_sft.jsonl"
     output_dir = "output/sft_qwen3_vl"
     
     # Swift SFT Arguments

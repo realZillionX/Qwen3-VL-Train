@@ -47,7 +47,7 @@ def custom_reward_manager(completions, solution, **kwargs):
 def main():
     # User args (can be replaced by ArgumentParser for more flexibility)
     model_path = "/path/to/Qwen3-VL-32B-Thinking" # Placeholder, user needs to set this
-    data_path = "train.jsonl"
+    data_path = "train_grpo.jsonl"
     output_dir = "output/grpo_qwen3_vl"
     
     # Configuration
