@@ -68,10 +68,18 @@ python prepare_data.py \
 
 ```json
 {
-  "query": "Please solve this maze...\nPlease output your final answer within <answer>...</answer> tags.",
-  "response": "<answer>[1, 2, 3]</answer>",    // SFT使用：作为监督Label
-  "images": ["/abs/path/to/image.png"],      // 两个阶段共用
-  "solution": "[1, 2, 3]"                    // GRPO使用：作为Reward判据
+  "query": "Please solve this maze...\n不要输出思考过程，直接输出答案。", // SFT Prompt
+  "response": "[1, 2, 3]",                    // SFT用于监督：无标签
+  "images": ["/abs/path/to/image.png"],
+  "solution": "[1, 2, 3]"             
+}
+```
+**或者 (GRPO 格式):**
+```json
+{
+  "query": "Please solve this maze...\n输出思考过程，并把答案用<answer></answer>包裹。", // GRPO Prompt
+  "response": "<answer>[1, 2, 3]</answer>",   // GRPO训练时模型会自动生成带标签的回复
+  ...
 }
 ```
 
