@@ -58,7 +58,24 @@ python infer_precheck.py \
     --data_path train.jsonl
 ```
 
-## 4. GRPO 训练
+## 4. 运行训练 (Run Training)
+
+本项目支持 **SFT (监督微调)** 和 **GRPO (强化学习)** 两种模式。
+建议流程：先进行 SFT 让模型适应格式，再进行 GRPO 提升能力。
+
+### 方式一：SFT (监督微调)
+用于让模型初步学会题目格式和基础解法。
+
+1.  编辑 `train_sft.py`，修改 `model_path` 指向你的模型权重目录。
+2.  运行脚本：
+    ```bash
+    python train_sft.py
+    ```
+    输出模型默认保存在 `output/sft_qwen3_vl`。
+
+### 方式二：GRPO (强化学习)
+用于利用奖励函数进一步提升推理能力。
+**注意**：你可以将 `train_grpo.py` 中的 `model_path` 修改为 SFT 后的 checkpoint 路径（例如 `output/sft_qwen3_vl/checkpoint-xxx`），以实现两阶段训练。
 
 我为你准备了一个 Python 训练脚本 `train_grpo.py`，它封装了 `ms-swift` 的 `GRPOTrainer` 并集成了针对 `eyeballing` 和 `maze` 任务的自定义奖励函数。
 
