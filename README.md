@@ -43,7 +43,7 @@ pip install vllm
 # 在有网机器运行
 python download_model.py --save_dir ./model_weights
 ```
-将下载好的 `./model_weights` 目录拷贝到训练服务器。
+将下载好的 `./model_weights` 目录拷贝到训练服务器。下载完成后，请在 `train_sft.py` 和 `train_grpo.py` 中修改 `model_path` 指向该目录。
 
 ### 1.3 离线配置
 本项目脚本内置了以下环境变量，无需手动设置：
@@ -141,6 +141,6 @@ GRPO 的核心在于 `rewards.py`，我们定义了针对 VLMPuzzle 任务的特
 
 *   **`infer_precheck.py`**:
     *   用途：在训练前测试模型是否能正常加载和推理。
-    *   用法：`python infer_precheck.py --model_path <path>`
+    *   用法：`python infer_precheck.py --model_path <path> --data_path train_sft.jsonl`
 *   **`download_model.py`**:
     *   用途：下载模型权重。
